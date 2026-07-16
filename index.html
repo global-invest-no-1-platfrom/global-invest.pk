@@ -163,6 +163,7 @@
         body.dark-theme .settings-list, 
         body.dark-theme .plan-card,
         body.dark-theme .rulebook-box,
+        body.dark-theme .pwa-box,
         body.dark-theme .payment-info {
             background-color: #1e1e1e !important;
             color: #e0e0e0 !important;
@@ -255,6 +256,26 @@
             </div>
 
             <button class="btn-got-it" onclick="closeRulebook()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- ================= BEAUTIFUL CUSTOM PWA INSTALL MODAL ================= -->
+    <div id="pwaModal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+        <div class="card pwa-box" style="width: 90%; max-width: 400px; padding: 25px 20px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 0; background: var(--white);">
+            <i class="fa-solid fa-cloud-arrow-down" style="font-size: 50px; color: var(--primary); margin-bottom: 15px;"></i>
+            <h3 style="color: var(--primary); margin-bottom: 10px; font-weight: 800;">Install App</h3>
+            <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">To install the official App on your device, please follow these steps:</p>
+            <div style="text-align: left; font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 25px;">
+                <p style="margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="background: #e3f2fd; color: var(--primary); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; flex-shrink: 0;">1</span>
+                    <span><b>Android (Chrome):</b> Tap the three dots (<i class="fa-solid fa-ellipsis-vertical"></i>) at the top right and click <b>"Install app"</b> or <b>"Add to Home screen"</b>.</span>
+                </p>
+                <p style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="background: #e3f2fd; color: var(--primary); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; flex-shrink: 0;">2</span>
+                    <span><b>iPhone (Safari):</b> Tap the Share button (<i class="fa-solid fa-share-nodes"></i>) at the bottom and click <b>"Add to Home Screen"</b>.</span>
+                </p>
+            </div>
+            <button class="btn-primary" onclick="closePwaModal()">OK</button>
         </div>
     </div>
 
@@ -471,7 +492,7 @@
                     <li style="margin-bottom: 8px;"><b>Transaction Veracity:</b> All transaction references (Trx ID) are automatically cross-checked with the bank gateway database. Fake submissions lead to immediate account lock.</li>
                     <li style="margin-bottom: 8px;"><b>Server Access Control:</b> Bypassing standard navigation routes or directly calling admin endpoints will trigger server-side IP bans.</li>
                     <li style="margin-bottom: 8px;"><b>Refund Disclaimers:</b> Users agree that digital packages activated through verified deposits are digital services and not subject to cash refunds.</li>
-                    <li style="margin-bottom: 8px;"><b>Dispute Resolution:</b> All payout disputes must be resolved directly through official support. Taking disputes to public forums violates terms.</li>
+                    <li style="margin-bottom: 8px;"><b>Deposit Resolution:</b> All payout disputes must be resolved directly through official support. Taking disputes to public forums violates terms.</li>
                     <li style="margin-bottom: 8px;"><b>Inactivity Policy:</b> Accounts remaining inactive (no logins or ad views) for more than 90 consecutive days may have their free bonuses recycled.</li>
                     <li style="margin-bottom: 8px;"><b>Commission Auditing:</b> Commission rewards generated from referral deposits are audited manually before withdrawal approval to verify user authenticity.</li>
                     <li style="margin-bottom: 8px;"><b>Dynamic Rate Calibration:</b> System profitability margins and dynamic daily ad profits may be adjusted periodically to preserve platform longevity.</li>
@@ -919,7 +940,7 @@
             window.open("https://wa.me/" + cleanNum, "_blank");
         };
 
-        // PWA Installation Mechanism
+        // PWA Installation Mechanism with Custom Styled Modal Fallback
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -932,8 +953,13 @@
                 const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
             } else {
-                alert("To Install Global Invest App:\n\n1. On Android (Chrome): Tap the three dots at the top right and click 'Install app' or 'Add to Home screen'.\n2. On iPhone (Safari): Tap the share button at the bottom and click 'Add to Home Screen'.");
+                // Open our custom in-app modal instead of browser's generic native alert
+                document.getElementById('pwaModal').classList.remove('hidden');
             }
+        };
+
+        window.closePwaModal = () => {
+            document.getElementById('pwaModal').classList.add('hidden');
         };
 
         // Inject Dynamic Manifest for single-file PWA execution
@@ -965,7 +991,7 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
                     .then(reg => console.log('Service Worker registered successfully!', reg.scope))
-                    .catch(err => console.warn('Service Worker registration failed (ignore if sw.js is not deployed):', err));
+                    .catch(err => console.warn('Service Worker registration failed:', err));
             });
         }
 
@@ -1719,7 +1745,6 @@
             document.getElementById('admInsta').value = globalSettings.instagram || "";
             document.getElementById('admWeb').value = globalSettings.website || "";
             
-            // Populate agent support number settings input field
             document.getElementById('admAgentWA').value = globalSettings.agentWhatsapp || "923047374445";
 
             document.getElementById('admWithCond').value = globalSettings.withdrawCondition || 5;
@@ -2094,7 +2119,6 @@
             const insta = document.getElementById('admInsta').value;
             const web = document.getElementById('admWeb').value;
             
-            // Collect the Agent Whatsapp configuration setting
             const agentWa = document.getElementById('admAgentWA').value;
 
             const wCond = document.getElementById('admWithCond').value;
