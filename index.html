@@ -270,7 +270,7 @@
         <div class="card pwa-box" style="width: 90%; max-width: 400px; padding: 25px 20px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 0; background: var(--white);">
             <i class="fa-solid fa-android" style="font-size: 55px; color: #3DDC84; margin-bottom: 15px;"></i>
             <h3 style="color: var(--primary); margin-bottom: 10px; font-weight: 800;">Install Android App</h3>
-            <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Direct installation standard prompt loads automatically if configured. If it doesn't open instantly, follow these simple steps:</p>
+            <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Direct installation standard prompt loads automatically if configured. If it doesn't open instantly, follow this simple step:</p>
             <div style="text-align: left; font-size: 12px; line-height: 1.6; color: var(--text); margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 12px; border-left: 4px solid #3DDC84;">
                 <p style="margin-bottom: 10px; display: flex; gap: 10px; align-items: flex-start; color: #d32f2f;">
                     <i class="fa-solid fa-triangle-exclamation" style="margin-top: 3px;"></i>
@@ -946,22 +946,9 @@
             window.open("https://wa.me/" + cleanNum, "_blank");
         };
 
-        // PWA Installation Mechanism with Custom Styled Modal Fallback (Android Specific)
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        window.triggerPwaInstall = async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-            } else {
-                // Open our custom in-app modal instead of browser's generic native alert
-                document.getElementById('pwaModal').classList.remove('hidden');
-            }
+        // PWA Installation Mechanism (Direct APK Download Method)
+        window.triggerPwaInstall = () => {
+            window.location.href = "./app.apk";
         };
 
         window.closePwaModal = () => {
