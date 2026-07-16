@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Global Invest Platform - Official Portal">
     <meta property="og:description" content="Activate VIP packages to secure daily monetization dividends and manage payouts smoothly.">
-    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/2704/2704332.png">
+    <meta property="og:image" content="./logo.png">
     <meta property="og:url" content="https://global-invest-no-1-platfrom.github.io/global-invest.com/">
     <meta name="twitter:card" content="summary_large_image">
 
@@ -23,6 +23,9 @@
     
     <!-- PWA Theme Color -->
     <meta name="theme-color" content="#0d47a1">
+    
+    <!-- Shortcut Icon -->
+    <link rel="icon" type="image/png" href="./logo.png">
 
     <style>
         :root {
@@ -687,7 +690,7 @@
                     <div class="input-group"><label>Instagram Link</label><input type="text" id="admInsta" placeholder="https://instagram.com/..."></div>
                     <div class="input-group"><label>Website Link</label><input type="text" id="admWeb" placeholder="https://..."></div>
                     
-                    <!-- Editable Agent Whatsapp Support Number -->
+                    <!-- Editable Agent Support Number -->
                     <div class="input-group"><label>Agent Support Whatsapp Number (e.g., 923047374445)</label><input type="text" id="admAgentWA" placeholder="923047374445"></div>
                     
                     <hr style="margin:15px 0; border:1px solid #eee;">
@@ -958,7 +961,7 @@
             document.getElementById('pwaModal').classList.add('hidden');
         };
 
-        // Inject Dynamic Manifest for single-file PWA execution (Optimized with standard PNG Icon)
+        // Inject Dynamic Manifest for single-file PWA execution (Configured with local relative logo file)
         const manifestData = {
             "name": "Global Invest Platform",
             "short_name": "Global Invest",
@@ -969,12 +972,12 @@
             "start_url": "./index.html",
             "icons": [
                 {
-                    "src": "https://cdn-icons-png.flaticon.com/512/2704/2704332.png",
+                    "src": "./logo.png",
                     "sizes": "192x192",
                     "type": "image/png"
                 },
                 {
-                    "src": "https://cdn-icons-png.flaticon.com/512/2704/2704332.png",
+                    "src": "./logo.png",
                     "sizes": "512x512",
                     "type": "image/png"
                 }
@@ -1051,7 +1054,7 @@
                 document.getElementById('adminAccountNumber').innerText = payJC.number;
                 document.getElementById('clientPayName').innerText = "Account Name: " + payJC.name;
             } else {
-                document.getElementById('clientPayMethod').innerText = pay.method;
+                document.getElementById('clientPayMethod').innerText = "EASYPAISA ACCOUNT";
                 document.getElementById('adminAccountNumber').innerText = pay.number;
                 document.getElementById('clientPayName').innerText = "Account Name: " + pay.name;
             }
