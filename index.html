@@ -26,6 +26,9 @@
     
     <!-- Shortcut Icon -->
     <link rel="icon" type="image/png" href="./logo.png">
+    
+    <!-- Standard PWA Manifest Link -->
+    <link rel="manifest" href="./manifest.json">
 
     <style>
         :root {
@@ -267,8 +270,12 @@
         <div class="card pwa-box" style="width: 90%; max-width: 400px; padding: 25px 20px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 0; background: var(--white);">
             <i class="fa-solid fa-android" style="font-size: 55px; color: #3DDC84; margin-bottom: 15px;"></i>
             <h3 style="color: var(--primary); margin-bottom: 10px; font-weight: 800;">Install Android App</h3>
-            <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Direct installation standard prompt loads automatically. If it doesn't open instantly, follow this simple step:</p>
-            <div style="text-align: left; font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 12px; border-left: 4px solid #3DDC84;">
+            <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Direct installation standard prompt loads automatically if configured. If it doesn't open instantly, follow these simple steps:</p>
+            <div style="text-align: left; font-size: 12px; line-height: 1.6; color: var(--text); margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 12px; border-left: 4px solid #3DDC84;">
+                <p style="margin-bottom: 10px; display: flex; gap: 10px; align-items: flex-start; color: #d32f2f;">
+                    <i class="fa-solid fa-triangle-exclamation" style="margin-top: 3px;"></i>
+                    <span><b>Important Note:</b> Agar aap WhatsApp, Facebook ya Instagram browser par hain, to link ko copy kar ke seedha <b>Google Chrome</b> app me open karein, tabhi app download ho gi!</span>
+                </p>
                 <p style="display: flex; gap: 10px; align-items: flex-start;">
                     <span style="background: #e8f5e9; color: #2e7d32; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; flex-shrink: 0;">1</span>
                     <span>Tap the three dots (<i class="fa-solid fa-ellipsis-vertical"></i>) in your Chrome browser menu at the top-right, then select <b>"Install app"</b> or <b>"Add to Home screen"</b>.</span>
@@ -961,34 +968,6 @@
             document.getElementById('pwaModal').classList.add('hidden');
         };
 
-        // Inject Dynamic Manifest for single-file PWA execution (Configured with local relative logo file)
-        const manifestData = {
-            "name": "Global Invest Platform",
-            "short_name": "Global Invest",
-            "theme_color": "#0d47a1",
-            "background_color": "#f0f2f5",
-            "display": "standalone",
-            "orientation": "portrait",
-            "start_url": "./index.html",
-            "icons": [
-                {
-                    "src": "./logo.png",
-                    "sizes": "192x192",
-                    "type": "image/png"
-                },
-                {
-                    "src": "./logo.png",
-                    "sizes": "512x512",
-                    "type": "image/png"
-                }
-            ]
-        };
-        const manifestString = encodeURIComponent(JSON.stringify(manifestData));
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = 'data:application/manifest+json,' + manifestString;
-        document.head.appendChild(manifestLink);
-
         // Register Service Worker securely
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1054,7 +1033,7 @@
                 document.getElementById('adminAccountNumber').innerText = payJC.number;
                 document.getElementById('clientPayName').innerText = "Account Name: " + payJC.name;
             } else {
-                document.getElementById('clientPayMethod').innerText = "EASYPAISA ACCOUNT";
+                document.getElementById('clientPayMethod').innerText = pay.method;
                 document.getElementById('adminAccountNumber').innerText = pay.number;
                 document.getElementById('clientPayName').innerText = "Account Name: " + pay.name;
             }
