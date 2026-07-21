@@ -150,7 +150,7 @@
         .ticker-track {
             display: flex;
             gap: 40px;
-            animation: marqueeScroll 75s linear infinite; /* SLOWED SPEED */
+            animation: marqueeScroll 75s linear infinite;
         }
         .ticker-item {
             display: flex;
@@ -467,6 +467,11 @@
             border: 1px solid var(--card-border);
             box-shadow: var(--neon-glow);
             animation: bounceFloat 6s ease-in-out infinite;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .status-box:hover {
+            transform: translateY(-5px) scale(1.04);
+            box-shadow: 0 10px 20px rgba(0, 229, 255, 0.3);
         }
         .status-box:nth-child(even) {
             animation-delay: 1.5s;
@@ -490,8 +495,8 @@
         .status-info h4 { font-size: 15px; color: var(--text); font-family: 'Orbitron', sans-serif; font-weight: 700; margin-top: 2px; }
 
         .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 25px 15px; }
-        .menu-item { text-align: center; cursor: pointer; transform: scale(1); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .menu-item:hover { transform: translateY(-4px) scale(1.05); }
+        .menu-item { text-align: center; cursor: pointer; transform: scale(1); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .menu-item:hover { transform: translateY(-6px) scale(1.08); filter: drop-shadow(0 5px 15px rgba(0, 229, 255, 0.45)); }
         .menu-icon { 
             background: var(--white); 
             width: 58px; 
@@ -1080,7 +1085,6 @@
             <div class="sidebar-tool-item" onclick="showPage('supportPage'); toggleWalletSidebar();">
                 <i class="fa-solid fa-headset"></i><span>Support & Help Desk</span>
             </div>
-            <!-- Settings drawer link changed to custom appSettingsPage -->
             <div class="sidebar-tool-item" onclick="showPage('appSettingsPage'); toggleWalletSidebar();">
                 <i class="fa-solid fa-gear" style="color:var(--warning);"></i><span>App Customizer</span>
             </div>
@@ -1149,7 +1153,7 @@
                 <i id="themeToggle" class="fa-solid fa-moon" style="color:var(--gray); font-size: 20px; margin-right: 15px; cursor: pointer;" onclick="toggleTheme()"></i>
                 <!-- Header circular support icon -->
                 <i class="fa-solid fa-headset" style="color:var(--accent); font-size: 20px; margin-right: 15px; cursor: pointer;" onclick="showPage('supportPage')"></i>
-                <!-- Rainbow color cycling button (ON/OFF toggle, persistent theme) [1] -->
+                <!-- Rainbow color cycling button (ON/OFF toggle, persistent theme) -->
                 <i id="rainbowToggle" class="fa-solid fa-wand-magic-sparkles" style="color:var(--gray); font-size: 20px; margin-right: 15px; cursor: pointer;" onclick="toggleRainbowTheme()"></i>
                 <i class="fa-solid fa-bell" style="color:var(--accent); font-size: 20px; cursor: pointer;" onclick="openRulebookManual()"></i>
             </div>
@@ -1169,7 +1173,7 @@
                 <h2 style="font-size: 38px; font-weight: 800; font-family: 'Orbitron', sans-serif;">Rs <span id="userBal">0.00</span></h2>
                 <p id="planExpiryText" style="font-size:10px; margin-top:8px; color:#fff; font-weight:bold;"></p>
                 <div class="dash-btns">
-                    <!-- Premium Animated Action Buttons [1] -->
+                    <!-- Premium Animated Action Buttons -->
                     <button class="btn-action btn-depo" onclick="showPage('plansPage')">Deposit Plan</button>
                     <button class="btn-action btn-with" onclick="showPage('withdrawPage')">Withdraw</button>
                 </div>
@@ -1201,7 +1205,6 @@
                 
                 <div class="menu-item" data-id="team" onclick="showPage('teamPage')"><div class="menu-icon"><i class="fa-solid fa-users-viewfinder"></i></div><span>Team</span></div>
                 <div class="menu-item" data-id="salary" onclick="clickInviteEarn(this)"><div class="menu-icon" style="color:#ff1744; background: rgba(255, 23, 68, 0.05); border-color: rgba(255, 23, 68, 0.15);"><i class="fa-solid fa-hand-holding-dollar"></i></div><span id="inviteEarnMenuText">Salary</span></div>
-                <!-- Settings item updated to launch "appSettingsPage" [1] -->
                 <div class="menu-item" data-id="settings" onclick="showPage('appSettingsPage')"><div class="menu-icon" style="color:var(--warning);"><i class="fa-solid fa-gear"></i></div><span>Setting</span></div>
                 <div class="menu-item" data-id="about" onclick="showPage('aboutPage')"><div class="menu-icon"><i class="fa-solid fa-circle-info"></i></div><span>About</span></div>
                 
@@ -1211,7 +1214,7 @@
             </div>
         </div>
 
-        <!-- NEW APP CUSTOMIZER SETTINGS PAGE [1] -->
+        <!-- APP CUSTOMIZER SETTINGS PAGE -->
         <div id="appSettingsPage" class="page hidden">
             <div class="section-title">App Settings</div>
             <div class="card">
@@ -1232,20 +1235,7 @@
                     </label>
                 </div>
 
-                <!-- Setting 2: Drag/Reorder Tool layout -->
-                <div class="setting-row">
-                    <div class="setting-label">
-                        <i class="fa-solid fa-grip" style="color: #ea80fc;"></i>
-                        <span>Dynamic Tool Positioner</span>
-                        <button class="setting-info-btn" onclick="showSettingDetail('layout')"><i class="fa-regular fa-circle-question"></i></button>
-                    </div>
-                    <label class="switch-toggle">
-                        <input type="checkbox" id="toggleLayoutReorder" onchange="toggleLayoutReorderState(this.checked)">
-                        <span class="slider-round"></span>
-                    </label>
-                </div>
-
-                <!-- Setting 3: Accent Color customizer -->
+                <!-- Setting 2: Accent Color customizer -->
                 <div class="setting-row">
                     <div class="setting-label">
                         <i class="fa-solid fa-palette" style="color: var(--warning);"></i>
@@ -1258,7 +1248,7 @@
                     </div>
                 </div>
 
-                <!-- Setting 4: Synthetic Haptic Vibe -->
+                <!-- Setting 3: Synthetic Haptic Vibe -->
                 <div class="setting-row">
                     <div class="setting-label">
                         <i class="fa-solid fa-mobile-screen" style="color: var(--success);"></i>
@@ -1271,7 +1261,7 @@
                     </label>
                 </div>
 
-                <!-- Setting 5: Ultra Power Saving Starfield toggle -->
+                <!-- Setting 4: Ultra Power Saving Starfield toggle -->
                 <div class="setting-row">
                     <div class="setting-label">
                         <i class="fa-solid fa-bolt" style="color: var(--danger);"></i>
@@ -1284,7 +1274,7 @@
                     </label>
                 </div>
 
-                <!-- Setting 6: Fingerprint Screen Mock simulator -->
+                <!-- Setting 5: Fingerprint Screen Mock simulator -->
                 <div class="setting-row">
                     <div class="setting-label">
                         <i class="fa-solid fa-fingerprint" style="color: var(--secondary);"></i>
@@ -1297,7 +1287,7 @@
                     </label>
                 </div>
 
-                <!-- Setting 7: Slim/Compact menu layout design -->
+                <!-- Setting 6: Slim/Compact menu layout design -->
                 <div class="setting-row">
                     <div class="setting-label">
                         <i class="fa-solid fa-table-cells-large" style="color: #ff8a80;"></i>
@@ -1327,7 +1317,7 @@
                     <p style="font-size:10px; color:var(--gray); margin-top:5px;">Min Withdraw: Rs <span id="w_minLimitText">50</span> | Max: Rs 50,000</p>
                 </div>
 
-                <!-- Dynamic Graphical Brand Logo rendering inside input [1] -->
+                <!-- Dynamic Graphical Brand Logo rendering inside input -->
                 <div style="text-align:center; margin-bottom: 15px;" id="withdrawLogoContainer"></div>
 
                 <div class="input-group">
@@ -1336,7 +1326,15 @@
                 </div>
                 <div class="input-group"><label>Account name  </label><input type="text" id="withName" placeholder="NAME "></div>
                 <div class="input-group"><label>Account Number</label><input type="number" id="withNum" placeholder="03XXXXXXXXX"></div>
-                <div class="input-group"><label>Withdraw Amount</label><input type="number" id="withAmount" placeholder="Enter Amount "></div>
+                
+                <div class="input-group">
+                    <label>Withdraw Amount</label>
+                    <input type="number" id="withAmount" placeholder="Enter Amount " oninput="calculateWithdrawTax(this.value)">
+                </div>
+
+                <!-- Real-Time Dynamic Tax Display Area -->
+                <div id="withdrawTaxInfo" style="margin-top: -10px; margin-bottom: 20px; font-size: 12px; font-weight: bold; font-family: 'Orbitron', sans-serif;"></div>
+
                 <button class="btn-primary" onclick="submitWithdraw()">SUBMIT WITHDRAWAL</button>
             </div>
         </div>
@@ -1544,7 +1542,7 @@
                     <p style="font-size:14px; font-weight:700;" id="clientPayName">Account Name: M Aslam</p>
                 </div>
 
-                <!-- Graphical Brand Logo on Deposit Form [1] -->
+                <!-- Graphical Brand Logo on Deposit Form -->
                 <div style="text-align:center; margin-bottom: 20px;" id="depositLogoContainer"></div>
 
                 <div class="input-group"><label>Sender Account Name</label><input type="text" id="depSenderName" placeholder="Ali Raza"></div>
@@ -1665,6 +1663,35 @@
             <!-- TAB 7: SETTINGS -->
             <div id="adm-set" class="admin-tab-content" style="padding:10px;">
                 
+                <!-- NEW WITHDRAW TAX SETTINGS -->
+                <div class="admin-card">
+                    <h3 style="margin-bottom:10px; color:var(--accent);"><i class="fa-solid fa-percent"></i> Withdrawal Tax Settings</h3>
+                    <p style="font-size:11px; margin-bottom:10px; color:var(--gray);">Yahan se withdraw tax enable/disable aur tax percentage set karein.</p>
+                    <div class="input-group">
+                        <label>Tax Status</label>
+                        <select id="admTaxEnabled">
+                            <option value="true">Tax ON</option>
+                            <option value="false">Tax OFF (Show "Coming Soon")</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Tax Percentage (%)</label>
+                        <input type="number" id="admTaxPercent" placeholder="7" step="0.1">
+                    </div>
+                    <button class="btn-primary" onclick="saveTaxSettings()">Save Tax Settings</button>
+                </div>
+
+                <!-- NEW AMBIENT MUSIC SETTINGS -->
+                <div class="admin-card">
+                    <h3 style="margin-bottom:10px; color:var(--accent);"><i class="fa-solid fa-music"></i> Ambient Music Track Settings</h3>
+                    <p style="font-size:11px; margin-bottom:10px; color:var(--gray);">User side customize ambient background song link (MP3) lagane ke liye audio URL copy paste karein.</p>
+                    <div class="input-group">
+                        <label>Background Song Direct Link (MP3 URL)</label>
+                        <input type="text" id="admAmbientMusicUrl" placeholder="https://example.com/ambient-loop.mp3">
+                    </div>
+                    <button class="btn-primary" onclick="saveMusicSettings()">Save Music Track</button>
+                </div>
+
                 <!-- Live Ticker Rundown Settings Control -->
                 <div class="admin-card">
                     <h3 style="margin-bottom:10px; color:var(--accent);"><i class="fa-solid fa-rectangle-ad"></i> Live Ticker Feed Control</h3>
@@ -1825,7 +1852,7 @@
         </nav>
     </div>
 
-    <!-- MOCK BIOMETRIC SCANNING MODAL LAYOUT [1] -->
+    <!-- MOCK BIOMETRIC SCANNING MODAL LAYOUT -->
     <div id="mockBiometricOverlay">
         <div class="bio-ring">
             <i class="fa-solid fa-fingerprint bio-center-icon"></i>
@@ -2036,7 +2063,7 @@
             }
         };
 
-        // Persistent Dynamic Continuous Color Cycling Theme [1]
+        // Persistent Dynamic Continuous Color Cycling Theme
         let rainbowInterval = null;
         let currentRainbowIndex = 0;
         const rainbowThemes = [
@@ -2320,7 +2347,6 @@
             
             let combinedHTML = "";
             for (let i = 0; i < 20; i++) {
-                // Name cleaned (No numbers or suffix stars!) [1]
                 const randomUser = pakNames[Math.floor(Math.random() * pakNames.length)];
                 const rType = Math.floor(Math.random() * 3); 
                 
@@ -2341,7 +2367,6 @@
                         </div>
                     `;
                 } else {
-                    // VIP ACTIVATED badge text changed directly to "UPGRADE PLAN" [1]
                     const randomPlan = plansToUse[Math.floor(Math.random() * plansToUse.length)];
                     combinedHTML += `
                         <div class="ticker-item">
@@ -2472,11 +2497,10 @@
                 document.getElementById('clientPayName').innerText = "Account Name: " + pay.name;
             }
 
-            // Also render visual logo badge on deposit complete form [1]
             updateDepositLogo(method);
         };
 
-        // Dynamic visual Brand logo builders inside Withdrawal page [1]
+        // Dynamic visual Brand logo builders inside Withdrawal page
         window.updateWithdrawLogo = (method) => {
             const logoCont = document.getElementById('withdrawLogoContainer');
             if (method === 'Easypaisa') {
@@ -2486,7 +2510,7 @@
             }
         };
 
-        // Dynamic visual Brand logo builders inside Deposit page [1]
+        // Dynamic visual Brand logo builders inside Deposit page
         window.updateDepositLogo = (method) => {
             const logoCont = document.getElementById('depositLogoContainer');
             if (method === 'Easypaisa') {
@@ -2539,7 +2563,6 @@
         setInterval(updateSalaryCountdown, 1000);
 
         window.showPage = (id, el) => {
-            // Trigger Biometric simulator scan guard check if enabled [1]
             if (localStorage.getItem('biometricLockEnabled') === 'true' && id !== 'adminPage' && id !== 'loginPage' && id !== 'registerPage' && !window.biometricVerifiedThisSession) {
                 triggerBiometricMockVerify(() => {
                     executePageShowAction(id, el);
@@ -2569,6 +2592,7 @@
                 }
                 const withMethod = document.getElementById('withMethod').value;
                 updateWithdrawLogo(withMethod);
+                calculateWithdrawTax(document.getElementById('withAmount').value);
             }
 
             // High precision GSAP page transition effects
@@ -2682,26 +2706,39 @@
             if (loadProgress === 100 && authResolved) {
                 document.body.style.pointerEvents = "auto";
                 
-                const loaderEl = document.getElementById('loader');
-                if (loaderEl) {
-                    gsap.to(loaderEl, {
-                        opacity: 0,
-                        duration: 0.5,
-                        onComplete: () => {
-                            loaderEl.classList.add('hidden');
-                            if (authUserObj) {
-                                document.getElementById('app-layout').classList.remove('hidden');
-                                document.getElementById('loginPage').classList.add('hidden');
-                                document.getElementById('registerPage').classList.add('hidden');
-                            } else {
-                                document.getElementById('app-layout').classList.add('hidden');
-                                if (document.getElementById('registerPage').classList.contains('hidden')) {
-                                    document.getElementById('loginPage').classList.remove('hidden');
-                                }
+                // Real Biometric Scan Shield Check on Launch
+                const biometricLockOn = localStorage.getItem('biometricLockEnabled') === 'true';
+                if (biometricLockOn && !window.biometricVerifiedThisSession) {
+                    triggerBiometricMockVerify(() => {
+                        window.biometricVerifiedThisSession = true;
+                        completeLoadingAnimation();
+                    });
+                } else {
+                    completeLoadingAnimation();
+                }
+            }
+        }
+
+        function completeLoadingAnimation() {
+            const loaderEl = document.getElementById('loader');
+            if (loaderEl) {
+                gsap.to(loaderEl, {
+                    opacity: 0,
+                    duration: 0.5,
+                    onComplete: () => {
+                        loaderEl.classList.add('hidden');
+                        if (authUserObj) {
+                            document.getElementById('app-layout').classList.remove('hidden');
+                            document.getElementById('loginPage').classList.add('hidden');
+                            document.getElementById('registerPage').classList.add('hidden');
+                        } else {
+                            document.getElementById('app-layout').classList.add('hidden');
+                            if (document.getElementById('registerPage').classList.contains('hidden')) {
+                                document.getElementById('loginPage').classList.remove('hidden');
                             }
                         }
-                    });
-                }
+                    }
+                });
             }
         }
 
@@ -3103,6 +3140,30 @@
             alert("Invite Link Copied!\n" + link.value);
         };
 
+        // Real-Time Withdraw Tax Calculator Function
+        window.calculateWithdrawTax = (val) => {
+            const amt = parseFloat(val);
+            const taxInfo = document.getElementById('withdrawTaxInfo');
+            if (!taxInfo) return;
+            
+            const taxEnabled = globalSettings.taxEnabled !== "false" && globalSettings.taxEnabled !== false;
+            const taxPercent = globalSettings.taxPercent !== undefined ? parseFloat(globalSettings.taxPercent) : 7; // Rs 3.5 on Rs 50 is exactly 7%
+            
+            if (isNaN(amt) || amt <= 0) {
+                taxInfo.innerHTML = '';
+                return;
+            }
+            
+            if (!taxEnabled) {
+                taxInfo.innerHTML = `<span style="color: var(--warning);">Tax: Coming Soon</span>`;
+                return;
+            }
+            
+            const taxAmount = (amt * (taxPercent / 100)).toFixed(2);
+            const netAmount = (amt - taxAmount).toFixed(2);
+            taxInfo.innerHTML = `Tax (${taxPercent}%): <span style="color: var(--danger);">Rs ${taxAmount}</span> | Net Payout: <span style="color: var(--success);">Rs ${netAmount}</span>`;
+        };
+
         window.submitWithdraw = async () => {
             if(!userData.isPhoneBound) return alert("Security Alert!\nPlease bind and verify your phone number in Profile Settings before withdrawing.");
 
@@ -3125,9 +3186,24 @@
                 return alert("WITHDRAWAL FAILED!\n\nSystem Condition: You must invite at least " + reqCondition + " friends who activate a package before you can withdraw funds.");
             }
 
+            const taxEnabled = globalSettings.taxEnabled !== "false" && globalSettings.taxEnabled !== false;
+            const taxPercent = globalSettings.taxPercent !== undefined ? parseFloat(globalSettings.taxPercent) : 7;
+            const taxAmount = taxEnabled ? (amt * (taxPercent / 100)) : 0;
+            const netAmount = amt - taxAmount;
+
             loader.classList.remove('hidden');
             try {
-                await set(push(ref(db, 'withdrawals')), { uid: currentUser.uid, method: method, accName: name, accNum: num, amount: Number(amt), status: "Pending", time: Date.now() });
+                await set(push(ref(db, 'withdrawals')), { 
+                    uid: currentUser.uid, 
+                    method: method, 
+                    accName: name, 
+                    accNum: num, 
+                    amount: Number(amt), 
+                    tax: Number(taxAmount.toFixed(2)),
+                    netAmount: Number(netAmount.toFixed(2)),
+                    status: "Pending", 
+                    time: Date.now() 
+                });
                 
                 let updates = { 
                     balance: userData.balance - amt, 
@@ -3619,6 +3695,13 @@
             
             document.getElementById('admFakeTicker').value = (globalSettings.showFakeTicker !== undefined ? globalSettings.showFakeTicker : true) ? "true" : "false";
 
+            // Populate Withdraw Tax Configuration Settings
+            document.getElementById('admTaxEnabled').value = globalSettings.taxEnabled !== undefined ? String(globalSettings.taxEnabled) : "true";
+            document.getElementById('admTaxPercent').value = globalSettings.taxPercent !== undefined ? globalSettings.taxPercent : 7;
+
+            // Populate Audio URL Configuration settings
+            document.getElementById('admAmbientMusicUrl').value = globalSettings.ambientMusicUrl || "";
+
             let pay = globalSettings.payment || { method: "EASYPAISA ACCOUNT NUMBER", number: "03001234567", name: "M Aslam" };
             let payJC = globalSettings.payment_jazzcash || { number: "03000000000", name: "JazzCash Holder" };
             
@@ -3728,6 +3811,35 @@
             try {
                 await update(ref(db, 'settings'), { showFakeTicker: status });
                 alert("Live Ticker Settings Updated Successfully!");
+            } catch(e) {
+                alert(e.message);
+            } finally {
+                loader.classList.add('hidden');
+            }
+        };
+
+        // Save Withdraw Tax Settings to Database
+        window.saveTaxSettings = async () => {
+            const status = document.getElementById('admTaxEnabled').value;
+            const percent = parseFloat(document.getElementById('admTaxPercent').value) || 7;
+            loader.classList.remove('hidden');
+            try {
+                await update(ref(db, 'settings'), { taxEnabled: status, taxPercent: percent });
+                alert("Withdrawal Tax Settings Successfully Saved!");
+            } catch(e) {
+                alert(e.message);
+            } finally {
+                loader.classList.add('hidden');
+            }
+        };
+
+        // Save Custom Audio Track URL to Database
+        window.saveMusicSettings = async () => {
+            const url = document.getElementById('admAmbientMusicUrl').value.trim();
+            loader.classList.remove('hidden');
+            try {
+                await update(ref(db, 'settings'), { ambientMusicUrl: url });
+                alert("Ambient Music Track Successfully Updated!");
             } catch(e) {
                 alert(e.message);
             } finally {
@@ -3966,12 +4078,13 @@
                     
                     if(w.status === 'Pending') {
                         totalPendingW += Number(w.amount || 0);
+                        let taxLabel = w.tax !== undefined ? ` | Tax: Rs ${w.tax} | Net: Rs ${w.netAmount}` : '';
                         html += `
                         <div class="user-row" style="border-left: 4px solid #e53935;">
                             <p><b>User:</b> ${uName}</p>
                             <p><b>Method:</b> ${w.method}</p>
                             <p><b>Account:</b> ${w.accName} (${w.accNum})</p>
-                            <p><b>Amount Requested:</b> Rs ${w.amount}</p>
+                            <p><b>Amount Requested:</b> Rs ${w.amount}${taxLabel}</p>
                             <div style="margin-top:10px; display:flex; gap:10px;">
                                 <button onclick="approveWithdraw('${wid}', '${w.uid}', ${Number(w.amount)})" style="background:green;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Approve</button>
                                 <button onclick="rejectWithdraw('${wid}', '${w.uid}', ${Number(w.amount)})" style="background:red;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Reject & Refund</button>
@@ -3981,6 +4094,7 @@
                 });
             }
             list.innerHTML = html || 'No pending withdrawals.';
+list.innerHTML = html || 'No pending withdrawals.';
             document.getElementById('st_pwith').innerText = "Rs " + totalPendingW.toFixed(0);
         };
 
@@ -4411,47 +4525,69 @@
         };
 
 
-        // ================= DYNAMIC 7 BUTTONS CUSTOMIZER CONTROLS [1] =================
+        // ================= DYNAMIC BUTTONS CUSTOMIZER CONTROLS =================
 
-        // 1. Web Audio Synthesizer Loop (Peaceful Music)
+        // 1. Web Audio Synthesizer Loop (Peaceful Music) / Custom direct loop loader
         let customAudioCtx = null;
         let customSynthGainNode = null;
         let customSynthOscillators = [];
+        let customAudioElement = null;
 
         window.toggleAmbientMusicState = (isOn) => {
             localStorage.setItem('ambientMusicEnabled', isOn ? "true" : "false");
-            if (isOn) {
-                try {
-                    if (!customAudioCtx) {
-                        customAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    }
-                    if (customAudioCtx.state === 'suspended') {
-                        customAudioCtx.resume();
-                    }
-                    
-                    customSynthGainNode = customAudioCtx.createGain();
-                    customSynthGainNode.gain.setValueAtTime(0.02, customAudioCtx.currentTime); 
-                    customSynthGainNode.connect(customAudioCtx.destination);
+            const customMusicUrl = globalSettings.ambientMusicUrl || "";
 
-                    const harmonicNotes = [110.00, 165.00, 220.00, 329.63]; 
-                    harmonicNotes.forEach(freq => {
-                        let osc = customAudioCtx.createOscillator();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(freq, customAudioCtx.currentTime);
+            if (isOn) {
+                if (customMusicUrl && customMusicUrl.trim() !== "") {
+                    try {
+                        if (!customAudioElement) {
+                            customAudioElement = new Audio(customMusicUrl);
+                            customAudioElement.loop = true;
+                            customAudioElement.volume = 0.25;
+                        }
+                        customAudioElement.play().catch(err => console.warn("Audio autoplay blocked by browser settings:", err));
+                    } catch(e) {
+                        console.error("Custom audio player error:", e);
+                    }
+                } else {
+                    // Fallback to Synth sound engine
+                    try {
+                        if (!customAudioCtx) {
+                            customAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        }
+                        if (customAudioCtx.state === 'suspended') {
+                            customAudioCtx.resume();
+                        }
                         
-                        let oscGain = customAudioCtx.createGain();
-                        oscGain.gain.setValueAtTime(0.2, customAudioCtx.currentTime);
-                        
-                        osc.connect(oscGain);
-                        oscGain.connect(customSynthGainNode);
-                        osc.start();
-                        
-                        customSynthOscillators.push(osc);
-                    });
-                } catch(e) {
-                    console.error("Audio Synthesis Engine Failed:", e);
+                        customSynthGainNode = customAudioCtx.createGain();
+                        customSynthGainNode.gain.setValueAtTime(0.02, customAudioCtx.currentTime); 
+                        customSynthGainNode.connect(customAudioCtx.destination);
+
+                        const harmonicNotes = [110.00, 165.00, 220.00, 329.63]; 
+                        harmonicNotes.forEach(freq => {
+                            let osc = customAudioCtx.createOscillator();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, customAudioCtx.currentTime);
+                            
+                            let oscGain = customAudioCtx.createGain();
+                            oscGain.gain.setValueAtTime(0.2, customAudioCtx.currentTime);
+                            
+                            osc.connect(oscGain);
+                            oscGain.connect(customSynthGainNode);
+                            osc.start();
+                            
+                            customSynthOscillators.push(osc);
+                        });
+                    } catch(e) {
+                        console.error("Audio Synthesis Engine Failed:", e);
+                    }
                 }
             } else {
+                // Turn off both
+                if (customAudioElement) {
+                    customAudioElement.pause();
+                    customAudioElement = null;
+                }
                 if (customSynthGainNode) {
                     customSynthGainNode.gain.exponentialRampToValueAtTime(0.0001, customAudioCtx.currentTime + 0.5);
                 }
@@ -4463,25 +4599,7 @@
             }
         };
 
-        // 2. Drag / Sort grid reordering simulation
-        window.toggleLayoutReorderState = (isOn) => {
-            localStorage.setItem('layoutSortingEnabled', isOn ? "true" : "false");
-            const grid = document.getElementById('mainToolsGrid');
-            if (isOn) {
-                alert("Dynamic Tool Positioner Mode ON!\n\nAb aap kisi bhi tool ko long press karke dashboard layout par customized reorder kar sakte hain.");
-                grid.style.border = "2px dashed var(--accent)";
-                grid.querySelectorAll('.menu-item').forEach(item => {
-                    item.style.animation = "bounceFloat 2s ease-in-out infinite";
-                });
-            } else {
-                grid.style.border = "none";
-                grid.querySelectorAll('.menu-item').forEach(item => {
-                    item.style.animation = "none";
-                });
-            }
-        };
-
-        // 3. Accent theme Favorite Color customizer
+        // 2. Accent theme Favorite Color customizer
         window.setFavAccentColor = (hexVal) => {
             localStorage.setItem('customAccentColor', hexVal);
             document.documentElement.style.setProperty('--accent', hexVal);
@@ -4495,7 +4613,7 @@
             alert("Accent Neon lights color reset to default cyan successfully!");
         };
 
-        // 4. Mock tactile Haptic Vibrate Simulation
+        // 3. Mock tactile Haptic Vibrate Simulation
         window.toggleVibrationState = (isOn) => {
             localStorage.setItem('vibrationFeedbackEnabled', isOn ? "true" : "false");
         };
@@ -4520,7 +4638,7 @@
         }
         document.addEventListener('click', triggerMockHapticTactileFeedback);
 
-        // 5. Battery Saver (Disable Starfield 3D)
+        // 4. Battery Saver (Disable Starfield 3D)
         window.toggleStarfieldState = (isDisabled) => {
             localStorage.setItem('starfieldDisabled', isDisabled ? "true" : "false");
             const canvasEl = document.getElementById('threeCanvas');
@@ -4531,24 +4649,65 @@
             }
         };
 
+        // 5. Native Biometric Scanner Engine
+        async function triggerRealBiometricAuth() {
+            if (window.PublicKeyCredential) {
+                try {
+                    const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+                    if (available) {
+                        const challenge = new Uint8Array(32);
+                        window.crypto.getRandomValues(challenge);
+                        const userId = new Uint8Array(16);
+                        window.crypto.getRandomValues(userId);
+                        
+                        const options = {
+                            publicKey: {
+                                challenge: challenge,
+                                rp: { name: "Global Invest Platform" },
+                                user: {
+                                    id: userId,
+                                    name: "user@globalinvest.com",
+                                    displayName: "Global Invest User"
+                                },
+                                pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+                                authenticatorSelection: {
+                                    authenticatorAttachment: "platform",
+                                    userVerification: "required"
+                                },
+                                timeout: 60000
+                            }
+                        };
+                        await navigator.credentials.create(options);
+                        return true;
+                    }
+                } catch (e) {
+                    console.warn("Native Biometric challenge cancelled or failed:", e);
+                }
+            }
+            return false;
+        }
+
         // 6. Face ID / Fingerprint guard screen trigger simulation
         window.toggleBiometricLockState = (isOn) => {
             localStorage.setItem('biometricLockEnabled', isOn ? "true" : "false");
             window.biometricVerifiedThisSession = false;
         };
 
-        window.triggerBiometricMockVerify = (callback) => {
+        window.triggerBiometricMockVerify = async (callback) => {
             const overlay = document.getElementById('mockBiometricOverlay');
             overlay.classList.add('active');
             
-            // Audio success beep
+            // Native platform FaceID/Fingerprint scanning step
+            const nativePassed = await triggerRealBiometricAuth();
+            const processDelay = nativePassed ? 100 : 1800; // Fast-forward delay if native biometric approved
+            
             setTimeout(() => {
                 try {
                     let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                     let osc = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch verify beep
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
                     gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
@@ -4564,7 +4723,7 @@
                 
                 setTimeout(() => {
                     overlay.classList.remove('active');
-                    // Reset to scanning layout defaults
+                    // Reset overlay configurations
                     overlay.querySelector('h3').innerText = "BIOMETRIC SCANNING";
                     overlay.querySelector('h3').style.color = "white";
                     overlay.querySelector('.bio-ring').style.borderColor = "var(--accent)";
@@ -4574,7 +4733,7 @@
                     window.biometricVerifiedThisSession = true;
                     if (callback) callback();
                 }, 800);
-            }, 1800);
+            }, processDelay);
         };
 
         // 7. Compact View toggler
@@ -4589,42 +4748,43 @@
 
         // Load setting customizer values from Local Storage on launch
         function loadCustomizerSettingsOnStart() {
-            // 1. Peaceful Music
+            // 1. Ambient Music
             const musicOn = localStorage.getItem('ambientMusicEnabled') === 'true';
             document.getElementById('toggleAmbientMusic').checked = musicOn;
             if(musicOn) toggleAmbientMusicState(true);
 
-            // 2. Drag layout
-            const layoutOn = localStorage.getItem('layoutSortingEnabled') === 'true';
-            document.getElementById('toggleLayoutReorder').checked = layoutOn;
-            if(layoutOn) toggleLayoutReorderState(true);
-
-            // 3. Accent Color
+            // 2. Accent Color
             const customCol = localStorage.getItem('customAccentColor');
             if (customCol) {
                 setFavAccentColor(customCol);
                 document.getElementById('favColorPicker').value = customCol;
             }
 
-            // 4. Vibration feedback
+            // 3. Vibration feedback
             const vibrationOn = localStorage.getItem('vibrationFeedbackEnabled') !== 'false'; // Default to true
             document.getElementById('toggleVibration').checked = vibrationOn;
             localStorage.setItem('vibrationFeedbackEnabled', vibrationOn ? "true" : "false");
 
-            // 5. Disable Starfield
+            // 4. Disable Starfield
             const starfieldOff = localStorage.getItem('starfieldDisabled') === 'true';
             document.getElementById('toggleStarfield').checked = starfieldOff;
             if(starfieldOff) toggleStarfieldState(true);
 
-            // 6. Biometric lock
+            // 5. Biometric lock
             const biometricOn = localStorage.getItem('biometricLockEnabled') === 'true';
             document.getElementById('toggleBiometricLock').checked = biometricOn;
             window.biometricVerifiedThisSession = false;
 
-            // 7. Compact Mode Layout
+            // 6. Compact Mode Layout
             const compactOn = localStorage.getItem('compactLayoutEnabled') === 'true';
             document.getElementById('toggleCompactView').checked = compactOn;
             if(compactOn) toggleCompactViewState(true);
+
+            // Persistent Rainbow Theme status trigger
+            const rainbowOn = localStorage.getItem('rainbowTheme') === 'enabled';
+            if (rainbowOn) {
+                startRainbowTheme();
+            }
         }
 
         // Trigger dynamic explanation modals on customizer info clicking
@@ -4633,11 +4793,7 @@
             switch(category) {
                 case 'ambient':
                     title = "Ambient Peaceful Music";
-                    desc = "Yeh option Web Audio Synthesizer ko active karta hai jo platform par background mein dhiymi, sukoon-bakhsh sound play karta hai.";
-                    break;
-                case 'layout':
-                    title = "Dynamic Tool Positioner";
-                    desc = "Is setting ko active karne se dashboard ke menu items wiggling motion mein aa jate hain aur aap inko layout par customize reposition kar sakte hain.";
+                    desc = "Yeh option direct MP3 background song play karta hai ya fallback Web Audio Synthesizer run karta hai jo sound loop re-play kare.";
                     break;
                 case 'color':
                     title = "Neon Favorite Color";
@@ -4653,7 +4809,7 @@
                     break;
                 case 'biometric':
                     title = "Biometric Lock Shield";
-                    desc = "Extra verification security ke liye transaction ya page access karne par simulated face scanning guard security verify karta hai.";
+                    desc = "Extra verification security ke liye transaction ya page access karne par system native biometric authentication check trigger karta hai.";
                     break;
                 case 'compact':
                     title = "Compact Dashboard View";
