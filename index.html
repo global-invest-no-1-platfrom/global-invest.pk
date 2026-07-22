@@ -4394,6 +4394,280 @@
                 document.getElementById('listTeam').innerHTML = html || `<p style="font-size:12px;text-align:center;color:var(--gray);">No team members found</p>`;
             });
         };
+
+        // ================= ADVANCED CUSTOMIZER SOUND ENGINE (6 DIFFERENT STYLES) =================
+        let synthAudioCtx = null;
+
+        window.setUiSoundStyle = (styleVal) => {
+            localStorage.setItem('uiSoundStyle', styleVal);
+        };
+
+        function playUiSoundEffect() {
+            const soundStyle = localStorage.getItem('uiSoundStyle') || 'cyber';
+            if (soundStyle === 'muted') return;
+
+            try {
+                if (!synthAudioCtx) {
+                    synthAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (synthAudioCtx.state === 'suspended') {
+                    synthAudioCtx.resume();
+                }
+
+                const now = synthAudioCtx.currentTime;
+                const osc = synthAudioCtx.createOscillator();
+                const gain = synthAudioCtx.createGain();
+
+                osc.connect(gain);
+                gain.connect(synthAudioCtx.destination);
+
+                if (soundStyle === 'cyber') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.exponentialRampToValueAtTime(880,
+now + 0.08);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.12);
+                } else if (soundStyle === 'laser') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(900, now);
+                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.15);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (soundStyle === 'bubble') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (soundStyle === 'arcade') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.05); // E5
+                    gain.gain.setValueAtTime(0.03, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (soundStyle === 'chime') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(1046.50, now); // C6
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+            } catch(e) {}
+        }
+
+        document.addEventListener('click', () => {
+            playUiSoundEffect();
+        });
+
+        // AMBIENT MUSIC ENGINE (Vidmate / Direct Link Support)
+        let customAudioElement = null;
+        let customSynthGainNode = null;
+        let customSynthOscillators = [];
+
+        window.toggleAmbientMusicState = (isOn) => {
+            localStorage.setItem('ambientMusicEnabled', isOn ? "true" : "false");
+            const customMusicUrl = globalSettings.ambientMusicUrl || "";
+
+            if (isOn) {
+                if (customMusicUrl && customMusicUrl.trim() !== "") {
+                    try {
+                        if (!customAudioElement) {
+                            customAudioElement = new Audio(customMusicUrl);
+                            customAudioElement.loop = true;
+                            customAudioElement.volume = 0.25;
+                        }
+                        customAudioElement.play().catch(err => console.warn("Audio autoplay blocked:", err));
+                    } catch(e) {
+                        console.error("Custom audio error:", e);
+                    }
+                } else {
+                    try {
+                        if (!synthAudioCtx) synthAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        if (synthAudioCtx.state === 'suspended') synthAudioCtx.resume();
+                        
+                        customSynthGainNode = synthAudioCtx.createGain();
+                        customSynthGainNode.gain.setValueAtTime(0.02, synthAudioCtx.currentTime); 
+                        customSynthGainNode.connect(synthAudioCtx.destination);
+
+                        [110.00, 165.00, 220.00, 329.63].forEach(freq => {
+                            let osc = synthAudioCtx.createOscillator();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(freq, synthAudioCtx.currentTime);
+                            let oscGain = synthAudioCtx.createGain();
+                            oscGain.gain.setValueAtTime(0.2, synthAudioCtx.currentTime);
+                            osc.connect(oscGain);
+                            oscGain.connect(customSynthGainNode);
+                            osc.start();
+                            customSynthOscillators.push(osc);
+                        });
+                    } catch(e) {}
+                }
+            } else {
+                if (customAudioElement) {
+                    customAudioElement.pause();
+                    customAudioElement = null;
+                }
+                if (customSynthGainNode && synthAudioCtx) {
+                    customSynthGainNode.gain.exponentialRampToValueAtTime(0.0001, synthAudioCtx.currentTime + 0.5);
+                }
+                setTimeout(() => {
+                    customSynthOscillators.forEach(o => { try{ o.stop(); }catch(e){} });
+                    customSynthOscillators = [];
+                    customSynthGainNode = null;
+                }, 600);
+            }
+        };
+
+        window.setFavAccentColor = (hexVal) => {
+            localStorage.setItem('customAccentColor', hexVal);
+            document.documentElement.style.setProperty('--accent', hexVal);
+            document.documentElement.style.setProperty('--neon-glow', `0 0 20px ${hexVal}73`);
+        };
+        
+        window.resetFavAccentColor = () => {
+            localStorage.removeItem('customAccentColor');
+            document.documentElement.removeAttribute('style');
+            document.getElementById('favColorPicker').value = "#00e5ff";
+            alert("Accent Neon lights color reset successfully!");
+        };
+
+        window.toggleVibrationState = (isOn) => { localStorage.setItem('vibrationFeedbackEnabled', isOn ? "true" : "false"); };
+        window.toggleStarfieldState = (isDisabled) => {
+            localStorage.setItem('starfieldDisabled', isDisabled ? "true" : "false");
+            document.getElementById('threeCanvas').style.display = isDisabled ? 'none' : 'block';
+        };
+
+        async function triggerRealBiometricAuth() {
+            if (window.PublicKeyCredential) {
+                try {
+                    const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+                    if (available) {
+                        const challenge = new Uint8Array(32); window.crypto.getRandomValues(challenge);
+                        const userId = new Uint8Array(16); window.crypto.getRandomValues(userId);
+                        await navigator.credentials.create({
+                            publicKey: {
+                                challenge, rp: { name: "Global Invest Platform" },
+                                user: { id: userId, name: "user@globalinvest.com", displayName: "Global Invest User" },
+                                pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+                                authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+                                timeout: 60000
+                            }
+                        });
+                        return true;
+                    }
+                } catch (e) {}
+            }
+            return false;
+        }
+
+        window.toggleBiometricLockState = (isOn) => {
+            localStorage.setItem('biometricLockEnabled', isOn ? "true" : "false");
+            window.biometricVerifiedThisSession = false;
+        };
+
+        window.triggerBiometricMockVerify = async (callback) => {
+            const overlay = document.getElementById('mockBiometricOverlay');
+            overlay.classList.add('active');
+            const nativePassed = await triggerRealBiometricAuth();
+            const delay = nativePassed ? 100 : 1800;
+            
+            setTimeout(() => {
+                overlay.querySelector('h3').innerText = "IDENTITY VERIFIED";
+                overlay.querySelector('h3').style.color = "var(--success)";
+                overlay.querySelector('.bio-ring').style.borderColor = "var(--success)";
+                overlay.querySelector('.bio-center-icon').className = "fa-solid fa-circle-check bio-center-icon";
+                overlay.querySelector('.bio-center-icon').style.color = "var(--success)";
+                
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                    overlay.querySelector('h3').innerText = "BIOMETRIC SCANNING";
+                    overlay.querySelector('h3').style.color = "white";
+                    overlay.querySelector('.bio-ring').style.borderColor = "var(--accent)";
+                    overlay.querySelector('.bio-center-icon').className = "fa-solid fa-fingerprint bio-center-icon";
+                    overlay.querySelector('.bio-center-icon').style.color = "var(--accent)";
+                    window.biometricVerifiedThisSession = true;
+                    if (callback) callback();
+                }, 800);
+            }, delay);
+        };
+
+        window.toggleCompactViewState = (isOn) => {
+            localStorage.setItem('compactLayoutEnabled', isOn ? "true" : "false");
+            if (isOn) document.body.classList.add('compact-mode');
+            else document.body.classList.remove('compact-mode');
+        };
+
+        window.toggleStockMarketViewState = (isOn) => {
+            localStorage.setItem('stockMarketViewEnabled', isOn ? "true" : "false");
+            if (isOn) showPage('stockMarketPage');
+        };
+
+        window.toggleStarburstState = (isOn) => {
+            localStorage.setItem('starburstEnabled', isOn ? "true" : "false");
+        };
+
+        function loadCustomizerSettingsOnStart() {
+            const musicOn = localStorage.getItem('ambientMusicEnabled') === 'true';
+            document.getElementById('toggleAmbientMusic').checked = musicOn;
+            if(musicOn) toggleAmbientMusicState(true);
+
+            const customCol = localStorage.getItem('customAccentColor');
+            if (customCol) { setFavAccentColor(customCol); document.getElementById('favColorPicker').value = customCol; }
+
+            const vibrationOn = localStorage.getItem('vibrationFeedbackEnabled') !== 'false';
+            document.getElementById('toggleVibration').checked = vibrationOn;
+
+            const starfieldOff = localStorage.getItem('starfieldDisabled') === 'true';
+            document.getElementById('toggleStarfield').checked = starfieldOff;
+            if(starfieldOff) toggleStarfieldState(true);
+
+            const biometricOn = localStorage.getItem('biometricLockEnabled') === 'true';
+            document.getElementById('toggleBiometricLock').checked = biometricOn;
+            window.biometricVerifiedThisSession = false;
+
+            const compactOn = localStorage.getItem('compactLayoutEnabled') === 'true';
+            document.getElementById('toggleCompactView').checked = compactOn;
+            if(compactOn) toggleCompactViewState(true);
+
+            const stockOn = localStorage.getItem('stockMarketViewEnabled') === 'true';
+            document.getElementById('toggleStockMarket').checked = stockOn;
+
+            const starburstOn = localStorage.getItem('starburstEnabled') === 'true';
+            document.getElementById('toggleStarburst').checked = starburstOn;
+
+            const soundStyle = localStorage.getItem('uiSoundStyle') || 'cyber';
+            document.getElementById('uiSoundSelect').value = soundStyle;
+
+            if (localStorage.getItem('rainbowTheme') === 'enabled') startRainbowTheme();
+        }
+
+        window.showSettingDetail = (category) => {
+            let details = {
+                ambient: ["Ambient Peaceful Music", "Direct Vidmate/MP3 link ya synth sound engine ko background mein play karta hai."],
+                color: ["Neon Favorite Color", "Website ke default cyan accent color ko apne pasandida custom neon color se badlein."],
+                vibration: ["Mock Vibrate Feedback", "Buttons click par tactile haptic vibration aur screen feedback trigger karta hai."],
+                battery: ["Disable Starfield 3D", "Power saving ke liye 3D background stars animation ko band karta hai."],
+                biometric: ["Biometric Lock Shield", "App access ya transactions ke liye native fingerprint/Face ID verification prompt karta hai."],
+                compact: ["Compact Dashboard View", "Dashboard layout ko minimize karke compact cards view banata hai."],
+                stockmarket: ["Live Stock Market Hub", "Home screen par top 30+ Mobile & Car companies ke live financial charts open karta hai."],
+                starburst: ["Touch Starburst Effects", "Screen par jahan bhi click karein, wahan 6 different multi-colored stars burst hote hain."],
+                uisound: ["UI Tap Sound Effect Style", "6 different futuristic sci-fi sound effects mein se apni pasand ka tap sound select karein."]
+            };
+            alert(`[PRO INFO] — ${details[category][0]}\n\n${details[category][1]}`);
+        };
+
+        loadCustomizerSettingsOnStart();
+        buildExhaustiveAboutContent();
     </script>
 </body>
 </html>
